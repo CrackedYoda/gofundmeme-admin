@@ -28,9 +28,19 @@ the backend's `ADMIN_WALLETS`, then sign the one-time message. The 12-hour sessi
 | Variable | Value |
 | --- | --- |
 | `ADMIN_WALLETS` | Comma-separated admin wallet addresses. |
-| `CORS_ORIGINS` | Add this panel's origin, e.g. `https://admin.gofundmeme.live`, alongside the site. |
+| `CORS_ORIGINS` | Add this panel's Vercel origin alongside the site. |
 
-## Running
+## Deploying (Vercel)
+
+The panel is its own Vercel project on its own URL, separate from the public site.
+
+1. Import this repo in Vercel. `vercel.json` sets the build (`pnpm build` → `dist/`), serves the app
+   on every path, and marks it `noindex`.
+2. Set `VITE_API_URL` to the backend API, including `/api` (e.g. `https://api.gofundmeme.live/api`).
+3. Add your domain in Vercel, then add that origin to the backend's `CORS_ORIGINS`.
+4. Make sure your wallet is in the backend's `ADMIN_WALLETS`.
+
+## Running locally
 
 ```sh
 cp .env.example .env    # set VITE_API_URL to the backend, including /api
@@ -38,7 +48,6 @@ pnpm install
 pnpm dev                # http://localhost:4100
 pnpm typecheck && pnpm test
 pnpm build              # static files in dist/
-pnpm start              # serves dist/ on $PORT (e.g. Railway)
 ```
 
 `src/api.ts` copies the admin types from the backend's `packages/core/src/api-types.ts`; keep them in sync.
